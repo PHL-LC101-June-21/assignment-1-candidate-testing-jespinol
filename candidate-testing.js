@@ -1,6 +1,5 @@
 const input = require('readline-sync');
 
-
 let candidateName;
 let question;
 let correctAnswer;
@@ -9,29 +8,43 @@ let questions;
 let correctAnswers;
 let candidateAnswers;
 
+questions = ['Who was the first American woman in space?', 'True or false: 5 kilometer == 5000 meters?', '(5 + 3)/2 * 10 = ?', "Given the array [8, 'Orbit', 'Trajectory', 45], what entry is at index 2?", 'What is the minimum crew size for the ISS?'];
+
+correctAnswers = ['Sally Ride', 'true', '40', 'Trajectory', '3'];
+
+candidateAnswers = []
 
 function askForName() {
   candidateName = input.question('Candidate Name: ');
 }
 
 function askQuestion() {
-  questions = ['Who was the first American woman in space?', 'True or false: 5 kilometer == 5000 meters?', '(5 + 3)/2 * 10 = ?', "Given the array [8, 'Orbit', 'Trajectory', 45], what entry is at index 2?", 'What is the minimum crew size for the ISS?'];
-  correctAnswers = ['Sally Ride', 'true', '40', 'Trajectory', '3'];
-  candidateAnswers = []
   for (i = 0; i < questions.length; i++) {
     console.log(`${i + 1}) ${questions[i]}`)
-    let candidateAnswer = input.question('Your Answer: ')
+    candidateAnswer = input.question('Your Answer: ')
     candidateAnswers.push(candidateAnswer)
     console.log(`Correct Answer: ${correctAnswers[i]}\n`)
     }
 }
 
 function gradeQuiz(candidateAnswers) {
-  console.log('Quiz complete. Grade TBA')
+  let goodAnswers = 0
+  for (i = 0; i < correctAnswers.length; i++){
+    if (correctAnswers[i].toLowerCase() === candidateAnswers[i].toLowerCase()) {
+      goodAnswers += 1
+    }
+  }
 
   let grade;
-
-
+  grade = (goodAnswers / correctAnswers.length) * 100
+  console.log(`>>> Overall Grade: ${grade}% (${goodAnswers} of ${correctAnswers.length} responses correct) <<<`)
+  
+  let status = 'FAILED'
+  if (grade >= 80) {
+    status = 'PASSED'
+  }
+  console.log(`>>> Status: ${status} <<<`)
+  
   return grade;
 }
 
@@ -40,6 +53,7 @@ function runProgram() {
   askQuestion();
   gradeQuiz(this.candidateAnswers);
 }
+
 
 // Don't write any code below this line //
 // And don't change these or your program will not run as expected //
@@ -54,3 +68,5 @@ module.exports = {
   gradeQuiz: gradeQuiz,
   runProgram: runProgram
 };
+
+
